@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,7 +28,7 @@ namespace lab14
                 if (this.Left == null)
                 {
                     TreeNode t = new TreeNode();
-                    t.lvl = this.lvl + 1;
+                    t.lvl = lvl + 1;
                     t.value = value;
                     this.Left = t;
                 }
@@ -39,7 +39,7 @@ namespace lab14
                 if (this.Right == null)
                 {
                     TreeNode t = new TreeNode();
-                    t.lvl = this.lvl + 1;
+                    t.lvl = lvl + 1;
                     t.value = value;
                     this.Right = t;
                 }
@@ -103,12 +103,12 @@ namespace lab14
         {
             if (Left == null && Right == null && lvl % 2 == 0) return value;
             else if (Left == null && Right == null && lvl % 2 == 1) return 0;
-            else if (Left == null && Right != null && lvl % 2 == 0) return value + Right.SumOdd();
-            else if (Left == null && Right != null && lvl % 2 == 1) return Right.SumOdd();
-            else if (Left != null && Right == null && lvl % 2 == 0) return value + Left.SumOdd();
-            else if (Left != null && Right == null && lvl % 2 == 1) return Left.SumOdd();
-            else if (lvl % 2 == 1) return Right.SumOdd() + Left.SumOdd();
-            else return value + Right.SumOdd() + Left.SumOdd();
+            else if (Left == null && Right != null && lvl % 2 == 0) return value + Right.SumEven();
+            else if (Left == null && Right != null && lvl % 2 == 1) return Right.SumEven();
+            else if (Left != null && Right == null && lvl % 2 == 0) return value + Left.SumEven();
+            else if (Left != null && Right == null && lvl % 2 == 1) return Left.SumEven();
+            else if (lvl % 2 == 1) return Right.SumEven() + Left.SumEven();
+            else return value + Right.SumEven() + Left.SumEven();
         }
 
         public void DrawNode(Graphics gr, float x, float y, float dx)
