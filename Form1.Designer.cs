@@ -38,7 +38,7 @@ namespace lab14
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(780, 608);
+            this.button1.Location = new System.Drawing.Point(810, 608);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(129, 48);
             this.button1.TabIndex = 0;
@@ -50,13 +50,13 @@ namespace lab14
             // 
             this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(716, 644);
+            this.pictureBox1.Size = new System.Drawing.Size(747, 644);
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(734, 12);
+            this.textBox1.Location = new System.Drawing.Point(765, 12);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(204, 341);
@@ -64,7 +64,7 @@ namespace lab14
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(734, 572);
+            this.textBox2.Location = new System.Drawing.Point(765, 568);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(204, 20);
             this.textBox2.TabIndex = 3;

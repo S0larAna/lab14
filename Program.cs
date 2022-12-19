@@ -96,6 +96,7 @@ namespace lab14
             else if (Left != null && Right == null && lvl % 2 == 0) return Left.SumOdd();
             else if (lvl % 2 == 0) return Right.SumOdd() + Left.SumOdd();
             else return value + Right.SumOdd() + Left.SumOdd();
+
         }
 
         public int SumEven()

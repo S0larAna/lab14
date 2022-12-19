@@ -37,7 +37,9 @@ namespace lab14
             tree.AddNode(5);
             tree.AddNode(16);
             tree.AddNode(15);
-            tree.DrawNode(gr, 400, 5, 200);
+            tree.AddNode(19);
+            tree.AddNode(20);
+            tree.DrawNode(gr, 400, 5, 300);
 
         }
     }
