@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Security.Cryptography.X509Certificates;
 
 namespace lab14
 {
@@ -16,6 +17,13 @@ namespace lab14
 
         public TreeNode()
         {
+            this.Left = null;
+            this.Right = null;
+            lvl = 0;
+        }
+        public TreeNode(int root_value)
+        {
+            this.value = root_value;
             this.Left = null;
             this.Right = null;
             lvl = 0;
@@ -52,8 +60,8 @@ namespace lab14
             {
                 return value;
             }
-            else if (Left == null && Right != null) return value += Right.Sum();
-            else if (Left != null && Right == null) return value += Left.Sum();
+            else if (Left == null && Right != null) return value + Right.Sum();
+            else if (Left != null && Right == null) return value + Left.Sum();
             else
             {
                 return value + Left.Sum() + Right.Sum();
@@ -75,15 +83,10 @@ namespace lab14
 
         public void ModifyTree(float m)
         {
-            if (this.value < m) value =-value;
+            if (this.value < m) this.value =-value;
             if (Left == null && Right == null) return;
-            if (Left == null && Right != null) Right.ModifyTree(m);
-            else if (Left != null && Right == null) Left.ModifyTree(m);
-            else
-            {
-                Left.ModifyTree(m);
-                Right.ModifyTree(m);
-            }
+            if (Right != null) Right.ModifyTree(m);
+            if (Left != null) Left.ModifyTree(m);
         }
 
         public int SumOdd()
@@ -109,6 +112,26 @@ namespace lab14
             else if (Left != null && Right == null && lvl % 2 == 1) return Left.SumEven();
             else if (lvl % 2 == 1) return Right.SumEven() + Left.SumEven();
             else return value + Right.SumEven() + Left.SumEven();
+        }
+
+        public bool CheckIfBST()
+        {
+            if (Left != null && Right!=null)
+            {
+                if (value <= Left.value || value > Right.value) return false;
+                else return true & Left.CheckIfBST() & Right.CheckIfBST();
+            }
+            if (Left!= null && Right == null)
+            {
+                if (value <= Left.value) return false;
+                else return true & Left.CheckIfBST();
+            }
+            if (Left == null && Right != null)
+            {
+                if (value > Right.value) return false;
+                else return true & Right.CheckIfBST();
+            }
+            else return true;
         }
 
         public void DrawNode(Graphics gr, float x, float y, float dx)
