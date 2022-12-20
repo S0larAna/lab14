@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Security.Cryptography.X509Certificates;
+using System.IO;
 
 namespace lab14
 {
@@ -13,12 +15,22 @@ namespace lab14
         public TreeNode Left;
         public TreeNode Right;
         public int lvl;
+        public sbyte flag;
 
         public TreeNode()
         {
             this.Left = null;
             this.Right = null;
             lvl = 0;
+            flag = 0;
+        }
+        public TreeNode(int root_value)
+        {
+            this.value = root_value;
+            this.Left = null;
+            this.Right = null;
+            lvl = 0;
+            flag = 0;
         }
 
         public void AddNode(int value)
@@ -30,6 +42,7 @@ namespace lab14
                     TreeNode t = new TreeNode();
                     t.lvl = lvl + 1;
                     t.value = value;
+                    t.flag = -1;
                     this.Left = t;
                 }
                 else Left.AddNode(value);
@@ -41,6 +54,7 @@ namespace lab14
                     TreeNode t = new TreeNode();
                     t.lvl = lvl + 1;
                     t.value = value;
+                    t.flag = 1;
                     this.Right = t;
                 }
                 else Right.AddNode(value);
@@ -52,8 +66,8 @@ namespace lab14
             {
                 return value;
             }
-            else if (Left == null && Right != null) return value += Right.Sum();
-            else if (Left != null && Right == null) return value += Left.Sum();
+            else if (Left == null && Right != null) return value + Right.Sum();
+            else if (Left != null && Right == null) return value + Left.Sum();
             else
             {
                 return value + Left.Sum() + Right.Sum();
@@ -75,15 +89,10 @@ namespace lab14
 
         public void ModifyTree(float m)
         {
-            if (this.value < m) value =-value;
+            if (this.value < m) this.value =-value;
             if (Left == null && Right == null) return;
-            if (Left == null && Right != null) Right.ModifyTree(m);
-            else if (Left != null && Right == null) Left.ModifyTree(m);
-            else
-            {
-                Left.ModifyTree(m);
-                Right.ModifyTree(m);
-            }
+            if (Right != null) Right.ModifyTree(m);
+            if (Left != null) Left.ModifyTree(m);
         }
 
         public int SumOdd()
@@ -111,27 +120,64 @@ namespace lab14
             else return value + Right.SumEven() + Left.SumEven();
         }
 
+        public bool CheckIfBST()
+        {
+            if (Left != null && Right!=null)
+            {
+                if (value <= Left.value || value > Right.value) return false;
+                else return true & Left.CheckIfBST() & Right.CheckIfBST();
+            }
+            if (Left!= null && Right == null)
+            {
+                if (value <= Left.value) return false;
+                else return true & Left.CheckIfBST();
+            }
+            if (Left == null && Right != null)
+            {
+                if (value > Right.value) return false;
+                else return true & Right.CheckIfBST();
+            }
+            else return true;
+        }
+
+        public void SaveToFile(StreamWriter writer)
+        {
+            writer.Write(value + " ");
+            if (Left != null) Left.SaveToFile(writer);
+            if (Right != null) Right.SaveToFile(writer);
+        }
+
+        public void TreeToArray(int[] n, int i)
+        {
+            n[i] = value;
+            if (Left != null) Left.TreeToArray(n, i+1);
+            if (Right != null) Right.TreeToArray(n, i + 1);
+        }
+
         public void DrawNode(Graphics gr, float x, float y, float dx)
         {
-            Pen myPen = new Pen(Color.Aquamarine, 5);
-            SolidBrush aqua = new SolidBrush(Color.Aquamarine);
-            SolidBrush black = new SolidBrush(Color.Black);
+            Color color;
+            if (lvl == 0) color = Color.DarkBlue;
+            else if (flag == -1) color = Color.SeaGreen;
+            else color = Color.Orange;
+            Pen myPen = new Pen(color, 5);
+            SolidBrush aqua = new SolidBrush(color);
+            SolidBrush white = new SolidBrush(Color.White);
+            Pen Lines = new Pen(Color.DarkBlue, 5);
             Font font = new Font("Colibri", 8);
-            //float dx = 100;
-            //Rectangle r = new Rectangle(x, y, 25, 25);
             if (Left != null)
             {
-                gr.DrawLine(myPen, x+6, y+14, x -dx*0.5f, y+50);
+                gr.DrawLine(Lines, x+6, y+14, x -dx*0.5f, y+50);
                 Left.DrawNode(gr, x- dx*0.5f, y+50, dx*0.5f);
             }
             if (Right != null)
             {
-                gr.DrawLine(myPen, x+6, y+14, x+dx*0.5f, y+50);
+                gr.DrawLine(Lines, x+6, y+14, x+dx*0.5f, y+50);
                 Right.DrawNode(gr, x+dx*0.5f, y+50, dx*0.5f);
             }
             gr.DrawEllipse(myPen, x-14, y, 25, 25);
             gr.FillEllipse(aqua, x-14, y, 25, 25);
-            gr.DrawString(Convert.ToString(this.value), font, black, x-8, y+5);
+            gr.DrawString(Convert.ToString(this.value), font, white, x-8, y+5);
         }
     }
     static class Program
